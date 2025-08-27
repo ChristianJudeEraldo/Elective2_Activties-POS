@@ -1,0 +1,74 @@
+img{width:auto; height:100%;}
+.pic_group {text-align:center; }
+.pic_group .pic_option div {
+    width:150px;
+    height:170px;
+    border:8px solid white;
+    overflow:hidden;
+    box-shadow:0 0 5px;
+    margin-bottom:20px;}
+    
+/*Adds background color*/  
+body {
+    background-color: rgb(167, 217, 243);
+}
+
+.pic_group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px; /* Adjust gap as needed */
+}
+
+.pic_option {
+    flex: 0 0 calc(16.66% - 10px); /* 6 boxes per row, fix gap at center*/
+    box-sizing: border-box;
+    margin: 0; /* Remove extra margin */
+}
+
+.pic_group .pic_option input[type=checkbox] {
+    transform:scale(1.5);
+    margin-right:5px;
+    }
+
+.option_group input[type=checkbox] {
+    width: 35%;
+    text-align: left;
+    padding-left: 50px;
+    }
+
+.group_text input[type=text] {
+    text-align: left;
+    padding: 5px;
+    margin: 5px;
+    }
+
+.bundle_checkbox input[type=checkbox] {
+    transform:scale(1.5);
+    margin-right:5px;
+    padding-left:50px;
+    }
+
+.bundle_option input[type=radio] {
+    transform:scale(1.5);
+    margin-right:5px;
+    padding-left:50px;
+    }
+
+.input_box {
+    width:100%;
+    margin-bottom:10px;
+    }
+
+.input_box span {
+    width:160px;
+    float:left;
+    margin-left:50px;
+    }
+
+.btn_process {
+    width:180px;
+    height:58px;
+    margin-bottom:5px;
+    }
+
