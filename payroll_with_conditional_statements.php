@@ -113,12 +113,12 @@
         }
         //decleration of variables with fix data value for employee info
         $employee_no          = "12345";
-        $department           = "Department of Computer Studies";
-        $firstname            = "Anabella";
-        $mname                = "Cajoles";
-        $surname              = "Doctor";
-        $civil_status         = "Married";
-        $designation          = "Faculty";
+        $department           = "Department of Engineering and Architecture";
+        $firstname            = "Christian Jude";
+        $mname                = "Ebreo";
+        $surname              = "Eraldo";
+        $civil_status         = "Single";
+        $designation          = "Student";
         $qualified_dependents = "ME";
         $paydate              = "March 30, 2021";
         $emp_status           = "Job Order";
@@ -728,6 +728,17 @@
                     default:
                         $tax_contri = 0;
                 }
+                $sss_contri     = floatval($sss_contri);
+                $philH_contri   = floatval($philH_contri);
+                $pagibig_contri = floatval($pagibig_contri);
+                $tax_contri     = floatval($tax_contri);
+
+                $sss_loan     = floatval($sss_loan);
+                $pagibig_loan = floatval($pagibig_loan);
+                $fs_deposit   = floatval($fs_deposit);
+                $fs_loan      = floatval($fs_loan);
+                $salary_loan  = floatval($salary_loan);
+                $other_loans  = floatval($other_loans);
                 $total_deduct = $sss_contri + $philH_contri + $pagibig_contri + $tax_contri + $sss_loan
                      + $pagibig_loan + $fs_deposit + $fs_loan + $salary_loan + $other_loans;
                 $net_income = $gross_income - $total_deduct;
@@ -791,8 +802,8 @@
                 <div class="payrol_form_group1">
                     <div style="float:left; width:50%;">
                         <div style="margin-left:100px; margin-top:10px;">
-                            <img src="images/defaultimage.png" class="img-thumbnail" style="width:250px;" alt="Cinque Terre">
-                            <input type="file" style="margin-top:10px; text-align:center;" name="file">
+                            <img id="employee-img" src="images/def.jpg" class="img-thumbnail" style="width:250px;" alt="Default Image">
+                            <input type="file" id="file" style="margin-top:10px; text-align:center;" name="file">
                         </div>
                         <div>
                             <span style="margin-top:20px;">Employee Number:</span>
@@ -955,7 +966,7 @@
                             </div>
                             <div>
                                 <span>Total Deductions:</span>
-                                <input type="text" class="form-control deduction_box" id="total_deduct" name="total_deduct" value="<?php echo $total_deduct ?>" disabled>
+                                <input type="text" class="form-control deduction_box" id="total_deduct" name="total_deduct" value="<?php echo $total_deduct ?>" readonly>
                             </div>
                             <div>
                                 <div>
@@ -966,6 +977,91 @@
                                     <button type="submit" name="print_payslip" class="btn btn-info" style="padding:5px; width:117px;">PRINT PAYSLIP</button>
                                     <button type="submit" name="cancel" class="btn btn-danger" style="padding:5px; width:100px;">CANCEL</button>
                                     <button type="submit" name="close" class="btn btn-dark" style="padding:5px; width:100px;">CLOSE</button>
+                                   <script>
+                                    $(document).ready(function() {
+
+                                        // ====== IMAGE PREVIEW ======
+                                        $('#file').on('change', function(event) {
+                                            const [file] = event.target.files;
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onload = function(e) {
+                                                    $('#employee-img').attr('src', e.target.result);
+                                                }
+                                                reader.readAsDataURL(file);
+                                            }
+                                        });
+
+                                        // ====== HELPER FUNCTIONS ======
+                                        function parseNum(v) {
+                                            v = (v || '').toString().replace(/,/g, '').trim();
+                                            v = v.replace(/[^\d.\-]/g, '');
+                                            return v === '' ? 0 : parseFloat(v) || 0;
+                                        }
+
+                                        function fmt(n) {
+                                            return (Math.round((n + Number.EPSILON) * 100) / 100).toFixed(2);
+                                        }
+
+                                        function updateSection(rateSel, hoursSel, outSel) {
+                                            var income = parseNum($(rateSel).val()) * parseNum($(hoursSel).val());
+                                            $(outSel).val(fmt(income));
+                                        }
+
+                                        // ====== INCOME AUTO-CALC ======
+                                        $('#basic_rate_hour, #basic_num_hours_cutoff').on('input', function() {
+                                            updateSection('#basic_rate_hour', '#basic_num_hours_cutoff', '#basic_income_cutoff');
+                                        });
+                                        $('#hono_rate_hour, #hono_num_hours_cutoff').on('input', function() {
+                                            updateSection('#hono_rate_hour', '#hono_num_hours_cutoff', '#hono_income_cutoff');
+                                        });
+                                        $('#other_rate_hour, #other_num_hours_cutoff').on('input', function() {
+                                            updateSection('#other_rate_hour', '#other_num_hours_cutoff', '#other_income_cutoff');
+                                        });
+
+                                        // ====== GROSS INCOME BUTTON ======
+                                        $('#calc_gross_btn').on('click', function(e) {
+                                            e.preventDefault();
+                                            var b = parseNum($('#basic_income_cutoff').val());
+                                            var h = parseNum($('#hono_income_cutoff').val());
+                                            var o = parseNum($('#other_income_cutoff').val());
+                                            $('#gross_income').val(fmt(b + h + o));
+                                        });
+
+                                        function updateTotalDeductions() {
+                                            let total = 0;
+                                            // Sum all deduction inputs that have class deduction_box, EXCLUDING the total output itself
+                                            $('.deduction_box').not('#total_deduct').each(function() {
+                                                total += parseNum($(this).val());
+                                            });
+                                            $('#total_deduct').val(fmt(total));
+                                        }
+
+                                        // Attach to inputs
+                                        $('.deduction_box').not('#total_deduct').on('input', updateTotalDeductions);
+
+                                        // initialize once on page load
+                                        updateTotalDeductions();
+                                    });
+
+                                    $(function() {
+                                        // When "Calculate Net Income" button is clicked
+                                        $('#calc_net_btn').on('click', function(e) {
+                                            e.preventDefault();
+
+                                            // Get numeric values
+                                            const gross = parseNum($('#gross_income').val());
+                                            const totalDeduct = parseNum($('#total_deduct').val());
+
+                                            // Compute and format
+                                            const net = gross - totalDeduct;
+
+                                            // Display result
+                                            $('#net_income').val(fmt(net));
+                                        });
+                                    });
+                                    </script>
+
                                 </div>
                             </div>
                         </div>
