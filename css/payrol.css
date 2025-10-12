@@ -1,0 +1,144 @@
+body {
+  background: rgb(255, 255, 255);
+  font-family: Arial, sans-serif;
+  color: #333;
+  font-size: 14px; /* Adjust base font size */
+}
+
+/* Main Payroll Card Container */
+.payroll-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 900px; /* Reduced width to match the image more closely */
+  width: 100%;
+  padding: 30px !important; /* Increase padding around the card */
+}
+
+/* Main Title */
+.main-title {
+  font-family: "Times New Roman", serif; /* Or a similar serif font */
+  font-weight: bold;
+  font-size: 26px; /* Larger font size */
+  margin-bottom: 25px !important; /* More space below the title */
+  color: #000; /* Black color */
+}
+
+/* Section Headings (like EMPLOYEE BASIC INFO) */
+.section-heading {
+  font-weight: bold;
+  margin-top: 0; /* Remove top margin */
+  margin-bottom: 15px !important;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Section Titles (like BASIC INCOME, REGULAR DEDUCTIONS) */
+.section-title {
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #333;
+}
+
+/* Input Labels */
+.input-label {
+  font-size: 13px; /* Smaller font for labels */
+  font-weight: normal; /* Normal weight for labels */
+  color: #333;
+  padding-top: calc(0.2rem + 1px);
+  padding-left: 0; /* Remove padding if any */
+}
+
+/* Form Controls (Inputs) */
+.form-control-sm {
+  height: calc(1.8rem + 2px); /* Smaller height for inputs */
+  padding: 0.2rem 0.5rem; /* Smaller padding */
+  font-size: 13px;
+  border-radius: 0.2rem; /* Slightly rounded corners */
+}
+/* === NEW & IMPROVED PHOTO FRAME === */
+
+/* The container for the photo */
+.employee-photo-frame {
+  width: 80px; /* A bit larger for better presence */
+  height: 80px;
+  margin: 20px auto 25px auto; /* TOP, left/right, BOTTOM */
+  padding: 4px; /* Creates a nice inner border effect */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Rounded corners for the frame */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The actual <img> tag inside the frame */
+.employee-photo-img {
+  width: 100%; /* Makes the image fill the frame's width */
+  height: 100%; /* Makes the image fill the frame's height */
+  object-fit: cover; /* Crucial: Scales the image to fill the space without distortion */
+  border-radius: 4px; /* Slightly rounded corners for the image itself */
+}
+
+/* Button Group at the bottom */
+.button-group {
+  justify-content: center !important; /* Center the buttons */
+  margin-top: 20px !important; /* More space above buttons */
+  gap: 5px; /* Space between buttons */
+}
+
+.action-btn {
+  font-size: 10px;
+  padding: 0.1rem 0.4rem; /* Smaller padding for buttons */
+  border-radius: 0.2rem;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Specific button colors from image */
+.button-group .btn-primary {
+  background-color: #007bff; /* Blue */
+  border-color: #007bff;
+  font-size: 11px;
+}
+
+.button-group .btn-info {
+  background-color: #17a2b8; /* Cyan */
+  border-color: #17a2b8;
+  font-size: 11px;
+}
+
+.button-group .btn-warning {
+  background-color: #ffc107; /* Yellow */
+  border-color: #ffc107;
+  color: #212529; /* Dark text for yellow button */
+  width: 75px;
+  height: 40px;
+  font-size: 11px;
+}
+.btn-danger {
+  width: 75px;
+  height: 35px;
+  background-color: #dc3545; /* Red */
+  border-color: #dc3545;
+}
+
+/* Bootstrap Overrides for alignment */
+.form-group.row {
+  margin-bottom: 5px; /* Reduce space between form rows */
+}
+
+/* Ensure column padding is respected */
+.col-md-6.border-right {
+  padding-right: 20px !important; /* Custom padding to match visual spacing */
+}
+
+.col-md-6.pl-4 {
+  padding-left: 20px !important; /* Custom padding to match visual spacing */
+}
+
+.form-group.row.align-items-center {
+  align-items: baseline !important; /* Align labels and inputs better */
+}
