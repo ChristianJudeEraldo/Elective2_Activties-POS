@@ -225,7 +225,7 @@
 <div style="width:55%;">
   <h5 class="text-left" style="font-weight:bold;">Order Discount Options:</h5>
   <div style="margin-bottom:15px;">
-    <input type="radio" name="discount" id="senior" class="discount-radio" checked>
+    <input type="radio" name="discount" id="senior" class="discount-radio">
     <label for="senior">Senior Citizen</label>
     <input type="radio" name="discount" id="disc_card" class="discount-radio">
     <label for="disc_card">With Disc. Card</label>
@@ -317,12 +317,16 @@
 
 <script>
 $(document).ready(function() {
-  // Running totals
+  // Running totals (kept from existing logic)
   let runningTotalQuantity = 0;
   let runningTotalDiscount = 0;
   let runningTotalDiscounted = 0;
 
-  // Helper: get selected discount rate
+  // Ensure no discount radio is pre-selected and clear fields on load
+  $('input[name="discount"]').prop('checked', false);
+  $('#discount_amount').val('');
+  $('#discounted_amount').val('');
+
   function getDiscountRate() {
     if ($('#senior').is(':checked')) return 0.30;
     if ($('#disc_card').is(':checked')) return 0.20;
@@ -330,8 +334,10 @@ $(document).ready(function() {
     return 0.00;
   }
 
-  // Trigger discount calculation via PHP
   function triggerDiscountCalculation() {
+    // only run when user has selected a discount radio
+    if ($('input[name="discount"]:checked').length === 0) return;
+
     var priceStr = $('#price').val().replace(/[P,]/g, '');
     var price = parseFloat(priceStr) || 0;
     var quantity = parseInt($('#quantity').val()) || 0;
@@ -339,7 +345,7 @@ $(document).ready(function() {
 
     if (price > 0 && quantity > 0) {
       $.ajax({
-        url: 'process/pos-quiz_calculate.php',
+        url: 'process/calc.php',
         method: 'POST',
         data: {
           price: price,
@@ -362,15 +368,19 @@ $(document).ready(function() {
     }
   }
 
-  // Event bindings for calculation triggers
-  $('#quantity').on('input', triggerDiscountCalculation);
+  // Trigger calc only when user selects a discount radio
   $('input[name="discount"]').on('change', triggerDiscountCalculation);
-  $('#price').on('input', triggerDiscountCalculation);
 
-  // Calculate Change Button
+  // Recalculate when price/quantity change ONLY if a radio is already selected
+  $('#quantity, #price').on('input', function() {
+    if ($('input[name="discount"]:checked').length) {
+      triggerDiscountCalculation();
+    }
+  });
+
+  // Calculate Change button (existing behavior retained)
   $('#btn_calculate_change').click(function(e) {
     e.preventDefault();
-
     var quantity = parseInt($('#quantity').val()) || 0;
     var discount_amount = ($('#discount_amount').val() || '').replace(/[P,]/g, '') || 0;
     var discounted_amount = ($('#discounted_amount').val() || '').replace(/[P,]/g, '') || 0;
@@ -387,7 +397,6 @@ $(document).ready(function() {
       },
       dataType: 'json',
       success: function(response) {
-        // Accumulate running totals
         runningTotalQuantity += parseInt(response.total_quantity) || 0;
         runningTotalDiscount += parseFloat(response.total_discount) || 0;
         runningTotalDiscounted += parseFloat(response.total_discounted) || 0;
@@ -403,7 +412,7 @@ $(document).ready(function() {
     });
   });
 
-  // NEW button functionality (clear order fields, keep totals)
+  // NEW button (existing behavior retained)
   $('#btn_new').click(function(e) {
     e.preventDefault();
     $('#item_name').val('');
@@ -413,7 +422,7 @@ $(document).ready(function() {
     $('#discounted_amount').val('');
     $('#cash_given').val('');
     $('#change').val('');
-    // Totals are retained (accumulated)
+    // totals retained
   });
 });
 </script>
