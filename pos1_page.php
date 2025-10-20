@@ -227,7 +227,7 @@
 <div style="width:55%;">
   <h5 class="text-left" style="font-weight:bold;">Order Discount Options:</h5>
   <div style="margin-bottom:15px;">
-    <input type="radio" name="discount" id="senior" class="discount-radio" checked>
+    <input type="radio" name="discount" id="senior" class="discount-radio">
     <label for="senior">Senior Citizen</label>
     <input type="radio" name="discount" id="disc_card" class="discount-radio">
     <label for="disc_card">With Disc. Card</label>
@@ -324,7 +324,7 @@ $(document).ready(function() {
   let runningTotalDiscount = 0;
   let runningTotalDiscounted = 0;
 
-  // Helper: get selected discount rate
+  // get selected discount rate
   function getDiscountRate() {
     if ($('#senior').is(':checked')) return 0.30;
     if ($('#disc_card').is(':checked')) return 0.20;
@@ -339,37 +339,44 @@ $(document).ready(function() {
     var quantity = parseInt($('#quantity').val()) || 0;
     var discount_rate = getDiscountRate();
 
-    if (price > 0 && quantity > 0) {
-      $.ajax({
-        url: 'process/pos-quiz_calculate.php',
-        method: 'POST',
-        data: {
-          price: price,
-          quantity: quantity,
-          discount_rate: discount_rate
-        },
-        dataType: 'json',
-        success: function(response) {
-          $('#discount_amount').val('P' + response.discount_amount);
-          $('#discounted_amount').val('P' + response.discounted_amount);
-        },
-        error: function() {
-          $('#discount_amount').val('');
-          $('#discounted_amount').val('');
-        }
-      });
-    } else {
-      $('#discount_amount').val('');
-      $('#discounted_amount').val('');
+    // Only run when a discount radio was chosen AND price & quantity are valid
+    if (discount_rate > 0 || $('input[name="discount"]:checked').attr('id') === 'none') {
+      if (price > 0 && quantity > 0) {
+        $.ajax({
+          url: 'process/calc.php',
+          method: 'POST',
+          data: {
+            price: price,
+            quantity: quantity,
+            discount_rate: discount_rate
+          },
+          dataType: 'json',
+          success: function(response) {
+            $('#discount_amount').val('P' + response.discount_amount);
+            $('#discounted_amount').val('P' + response.discounted_amount);
+          },
+          error: function() {
+            $('#discount_amount').val('');
+            $('#discounted_amount').val('');
+          }
+        });
+      } else {
+        // Clear when no valid price/quantity
+        $('#discount_amount').val('');
+        $('#discounted_amount').val('');
+      }
     }
+    // If no discount radio is selected (shouldn't happen since one is checked by default),
+    // do nothing — values remain as they were until a radio selection occurs.
   }
 
-  // Event bindings for calculation triggers
-  $('#quantity').on('input', triggerDiscountCalculation);
-  $('input[name="discount"]').on('change', triggerDiscountCalculation);
-  $('#price').on('input', triggerDiscountCalculation);
+  // Bind calculation only to discount radio selection.
+  // User must choose a discount option for the discount fields to update.
+  $('input[name="discount"]').on('change', function() {
+    triggerDiscountCalculation();
+  });
 
-  // Calculate Change Button
+  // Calculate Change Button (unchanged)
   $('#btn_calculate_change').click(function(e) {
     e.preventDefault();
 
@@ -405,7 +412,7 @@ $(document).ready(function() {
     });
   });
 
-  // NEW button functionality (clear order fields, keep totals)
+  // NEW button (unchanged)
   $('#btn_new').click(function(e) {
     e.preventDefault();
     $('#item_name').val('');
@@ -415,7 +422,7 @@ $(document).ready(function() {
     $('#discounted_amount').val('');
     $('#cash_given').val('');
     $('#change').val('');
-    // Totals are retained (accumulated)
+    // Totals are retained
   });
 });
 </script>

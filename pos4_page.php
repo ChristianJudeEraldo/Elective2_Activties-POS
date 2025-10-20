@@ -227,7 +227,7 @@
 <div style="width:55%;">
   <h5 class="text-left" style="font-weight:bold;">Order Discount Options:</h5>
   <div style="margin-bottom:15px;">
-    <input type="radio" name="discount" id="senior" class="discount-radio" checked>
+    <input type="radio" name="discount" id="senior" class="discount-radio">
     <label for="senior">Senior Citizen</label>
     <input type="radio" name="discount" id="disc_card" class="discount-radio">
     <label for="disc_card">With Disc. Card</label>
@@ -332,8 +332,11 @@ $(document).ready(function() {
     return 0.00;
   }
 
-  // Trigger discount calculation via PHP
+  // Trigger discount calculation via PHP (only when a radio is selected)
   function triggerDiscountCalculation() {
+    // do nothing if user hasn't selected a discount radio
+    if ($('input[name="discount"]:checked').length === 0) return;
+
     var priceStr = $('#price').val().replace(/[P,]/g, '');
     var price = parseFloat(priceStr) || 0;
     var quantity = parseInt($('#quantity').val()) || 0;
@@ -341,7 +344,7 @@ $(document).ready(function() {
 
     if (price > 0 && quantity > 0) {
       $.ajax({
-        url: 'process/pos-quiz_calculate.php',
+        url: 'process/calc.php',
         method: 'POST',
         data: {
           price: price,
@@ -364,10 +367,20 @@ $(document).ready(function() {
     }
   }
 
-  // Event bindings for calculation triggers
-  $('#quantity').on('input', triggerDiscountCalculation);
+  // ensure no discount radio is pre-selected and clear fields on load
+  $('input[name="discount"]').prop('checked', false);
+  $('#discount_amount').val('');
+  $('#discounted_amount').val('');
+
+  // Trigger calc only when user selects a discount radio
   $('input[name="discount"]').on('change', triggerDiscountCalculation);
-  $('#price').on('input', triggerDiscountCalculation);
+
+  // Recalculate when price/quantity change ONLY if a radio is already selected
+  $('#quantity, #price').on('input', function() {
+    if ($('input[name="discount"]:checked').length) {
+      triggerDiscountCalculation();
+    }
+  });
 
   // Calculate Change Button
   $('#btn_calculate_change').click(function(e) {

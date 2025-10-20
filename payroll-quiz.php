@@ -2,13 +2,34 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>JUDE`S CHOICE PAYROLL</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <title>JUDE`S CHOICE PAYROLL</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/payrol.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="css/payrol.css">
+  <style>
+    /* Increase size of the five action buttons */
+    .action-btn {
+        padding: 3px 4px;
+        font-size: 10px;
+        min-width: 70px;
+        height: 35px;
+        border-radius: 3px;
+        flex: 0 0 auto;
+    }
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    /* Optional: slightly larger primary button */
+    #btn_gross_income,
+    #btn_net_income {
+      font-weight: 500;
+    }
+
+    /* Ensure buttons don't wrap badly on small screens */
+    .d-flex .action-btn {
+      white-space: nowrap;
+    }
+  </style>
 </head>
 
 <body>
@@ -102,11 +123,7 @@
                         </div>
 
                         <div class="d-flex flex-wrap justify-content-between mt-3 button-group">
-                            <button class="btn btn-primary action-btn">GROSS INCOME</button>
-                            <button id="btn_net_income" class="btn btn-primary action-btn" name="calculate">NET INCOME</button>
-                            <button class="btn btn-info action-btn">SAVE</button>
-                            <button class="btn btn-info action-btn">UPDATE</button>
-                            <button class="btn btn-warning action-btn">NEW</button>
+                            <!-- buttons removed from left column (moved to right column) -->
                         </div>
                     </form>
                 </div>
@@ -195,8 +212,16 @@
                             <label class="col-sm-6 col-form-label input-label">Total Deductions:</label>
                             <div class="col-sm-6"><input type="text" class="form-control form-control-sm" id="total_deductions" readonly></div>
                         </div>
-                    </form>
-                </div>
+                        <!-- all action buttons placed on the right side -->
+                        <div class="mt-3 d-flex justify-content-end" style="gap:10px;">
+                            <button id="btn_gross_income" class="btn btn-primary action-btn">GROSS INCOME</button>
+                            <button id="btn_net_income" class="btn btn-primary action-btn" name="calculate">NET INCOME</button>
+                            <button id="btn_save" class="btn btn-info action-btn">SAVE</button>
+                            <button id="btn_update" class="btn btn-info action-btn">UPDATE</button>
+                            <button id="btn_new" class="btn btn-warning action-btn">NEW</button>
+                        </div>
+                     </form>
+                 </div>
             </div>
         </div>
     </div>
