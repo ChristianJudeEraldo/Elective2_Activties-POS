@@ -107,25 +107,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         return 0;
     }
 
-    // Income Tax Computation
+    // Income Tax Computation (Semi-Monthly)
     function computeIncomeTax($gross_income) {
-        $tax_table = [
-            [0, 20833, 0, 0, 0],
-            [20833, 33332, 0, 0.20, 20833],
-            [33333, 66666, 2500, 0.25, 33333],
-            [66667, 166666, 10833.33, 0.30, 66667],
-            [166667, 666666, 40833.33, 0.32, 166667],
-            [666667, 999999999, 200833.33, 0.35, 666667],
-        ];
-        foreach ($tax_table as $row) {
-            list($min, $max, $base_tax, $rate, $excess_over) = $row;
-            if ($gross_income >= $min && $gross_income <= $max) {
-                return $base_tax + ($gross_income - $excess_over) * $rate;
-            }
+    // Semi-monthly tax table (based on the image)
+    $tax_table = [
+        [0, 10417, 0, 0.00, 0],
+        [10417, 16666, 0, 0.20, 10417],
+        [16667, 33332, 1250, 0.25, 16667],
+        [33333, 83332, 5416.67, 0.30, 33333],
+        [83333, 333332, 20416.67, 0.32, 83333],
+        [333333, 999999999, 100416.67, 0.35, 333333],
+    ];
+
+    foreach ($tax_table as $row) {
+        list($min, $max, $base_tax, $rate, $excess_over) = $row;
+        if ($gross_income >= $min && $gross_income <= $max) {
+            return $base_tax + ($gross_income - $excess_over) * $rate;
         }
-        return 0;
     }
 
+    return 0;
+}
     // Pag-IBIG Computation
     function computePagIBIG($gross_income) {
         // Fixed Pag-IBIG contribution
