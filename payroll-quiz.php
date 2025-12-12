@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="css/payrol.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+  <script src="js/seri_payroll.js?v.1"></script>
+  <script src="js/seri_payroll_save.js?v.1"></script>
+
   <style>
     /* Increase size of the five action buttons */
     .action-btn {
@@ -19,11 +22,12 @@
         flex: 0 0 auto;
     }
 
-    /* Optional: slightly larger primary button */
+
     #btn_gross_income,
     #btn_net_income {
       font-weight: 500;
     }
+
 
     /* Ensure buttons don't wrap badly on small screens */
     .d-flex .action-btn {
@@ -51,7 +55,7 @@
                         <div class="form-group row align-items-center">
                             <label class="col-sm-4 col-form-label input-label">Employee Number:</label>
                             <div class="col-sm-8 d-flex">
-                                <input type="text" class="form-control form-control-sm flex-grow-1">
+                                <input type="text" class="form-control form-control-sm flex-grow-1" id="employee_no">
                             </div>
                         </div>
 
@@ -152,7 +156,7 @@
                         </div>
                         <div class="form-group row align-items-center">
                             <label class="col-sm-4 col-form-label input-label">Paydate:</label>
-                            <div class="col-sm-8"><input type="text" class="form-control form-control-sm" value=""></div>
+                            <div class="col-sm-8"><input type="text" class="form-control form-control-sm" value="" id="paydate"></div>
                         </div>
                         <div class="form-group row align-items-center">
                             <label class="col-sm-4 col-form-label input-label">Employee Status:</label>
@@ -387,3 +391,4 @@
         ]);
     }
 ?>
+

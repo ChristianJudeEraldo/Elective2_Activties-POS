@@ -366,8 +366,7 @@ $(document).ready(function() {
         $('#discounted_amount').val('');
       }
     }
-    // If no discount radio is selected (shouldn't happen since one is checked by default),
-    // do nothing — values remain as they were until a radio selection occurs.
+
   }
 
   // Bind calculation only to discount radio selection.
