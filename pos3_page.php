@@ -17,6 +17,13 @@
 
   <!-- External CSS -->
   <link rel="stylesheet" href="css/pos1_styles.css">
+
+  <!--js scripts-->
+  <script src="js/script_seri_pizzas.js?v.1"></script>
+  <script src="js/discount_options_function.js?v.1"></script>
+  <script src="js/seri_calculate_change.js?v.1"></script>
+  <script src="js/seri_pos_save.js?v.1"></script>
+
 </head>
 <body>
   <div class="container" style="margin-bottom:20px;">
@@ -240,7 +247,7 @@
   <div style="display:flex; gap:10px; margin-bottom:10px;">
     <button id="btn_calculate_change" class="btn btn-primary" style="width:190px;">CALCULATE CHANGE</button>
     <button id="btn_new" class="btn btn-danger" style="width:90px;">NEW</button>
-    <button class="btn btn-warning" style="width:90px;">SAVE</button>
+    <button id="btn_save" class="btn btn-warning" style="width:90px;">SAVE</button>
     <button class="btn btn-secondary" style="width:95px;">UPDATE</button>
   </div>
 
